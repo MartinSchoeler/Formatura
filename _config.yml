@@ -1,0 +1,12 @@
+title: "Formatura — Isadora Moreira de Borba"
+description: "Convite de formatura em Design de Moda"
+baseurl: "/Formatura"
+url: "https://martinschoeler.github.io"
+lang: pt-BR
+
+plugins:
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
