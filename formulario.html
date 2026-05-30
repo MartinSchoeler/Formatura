@@ -5,6 +5,18 @@ permalink: /formulario/
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<script type="text/javascript">
+var load = 0;
+
+document.getElementById('gform').onload = function(){
+    /*Execute on every reload on iFrame*/
+    load++;
+    if(load > 1){
+        /*Second reload is a submit*/
+        document.location = "{{ site.baseurl }}/obrigada/";
+    }
+}
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Obrigada! — Formatura Isadora</title>
