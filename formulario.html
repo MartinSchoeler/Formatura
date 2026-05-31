@@ -418,7 +418,7 @@ a{color:inherit}
   </header>
 
   <section class="thanks">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfiUJhAUdktFtN1-mlLKef4Qk37GdTTsAOG6iY5Qiu7uT7TzA/viewform?embedded=true" width="640" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <iframe id="gform" name="gform" src="https://docs.google.com/forms/d/e/1FAIpQLSfiUJhAUdktFtN1-mlLKef4Qk37GdTTsAOG6iY5Qiu7uT7TzA/viewform?embedded=true" width="640" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </section>
 
 
@@ -504,13 +504,16 @@ a{color:inherit}
 <script type="text/javascript">
 var load = 0;
 
-document.getElementById('gform').onload = function(){
-    /*Execute on every reload on iFrame*/
+const gform = document.getElementById('gform');
+if (gform) {
+  gform.addEventListener('load', function () {
+    // Execute on every reload in the iframe. The second load usually
+    // corresponds to the form submission confirmation page.
     load++;
-    if(load > 1){
-        /*Second reload is a submit*/
-        document.location = "{{ site.baseurl }}/obrigada/";
+    if (load > 1) {
+      window.location.href = "{{ site.baseurl }}/obrigada/";
     }
+  });
 }
 </script>
 </body>
