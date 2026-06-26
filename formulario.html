@@ -461,8 +461,8 @@ a{color:inherit}
   const start = eventDate;
   const end = new Date(eventDate.getTime() + 4*60*60*1000);
   const title = encodeURIComponent('Formatura Isadora Moreira de Borba');
-  const details = encodeURIComponent('Celebração de formatura em Design de Moda — 4Beer Três Figueiras.');
-  const loc = encodeURIComponent('4Beer Três Figueiras, Av. Teixeira Mendes, 830, Chácara das Pedras, Porto Alegre - RS');
+  const details = encodeURIComponent('Celebração de formatura em Design de Moda — Food Hall Bourbon Country.');
+  const loc = encodeURIComponent('Food Hall Bourbon Country, Av. Túlio de Rose, 80, Passo dAreia, Porto Alegre - RS');
   const gcalUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+title+'&dates='+toG(start)+'/'+toG(end)+'&details='+details+'&location='+loc;
   document.getElementById('gcalBtn').href = gcalUrl;
 
@@ -476,8 +476,8 @@ a{color:inherit}
     'DTSTART:'+toG(start),
     'DTEND:'+toG(end),
     'SUMMARY:Formatura Isadora Moreira de Borba',
-    'DESCRIPTION:Celebração de formatura em Design de Moda — 4Beer Três Figueiras.',
-    'LOCATION:4Beer Três Figueiras\\, Av. Teixeira Mendes\\, 830\\, Chácara das Pedras\\, Porto Alegre - RS',
+    'DESCRIPTION:Celebração de formatura em Design de Moda — Food Hall Bourbon Country.',
+    'LOCATION:Food Hall Bourbon Country\\, Av. Túlio de Rose\\, 80\\, Passo dAreia\\, Porto Alegre - RS',
     'END:VEVENT',
     'END:VCALENDAR',
   ].join('\r\n');
