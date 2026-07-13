@@ -561,7 +561,8 @@ a{color:inherit}
 })();
 </script>
 <script type="text/javascript">
-var load = 0;
+let formLoadCount = 0;
+let redirectEnabled = false;
 const consentKey = 'formatura-cookie-consent';
 const cookieModal = document.getElementById('cookieConsent');
 const acceptBtn = document.getElementById('acceptCookies');
@@ -583,6 +584,8 @@ function hideCookieModal() {
 
 function loadFormAfterConsent() {
   hideCookieModal();
+  formLoadCount = 0;
+  redirectEnabled = true;
   if (gform) {
     const src = gform.getAttribute('data-src');
     if (src && gform.getAttribute('src') !== src) {
@@ -591,12 +594,27 @@ function loadFormAfterConsent() {
   }
 }
 
+function cookiesEnabled() {
+  try {
+    const testKey = 'formatura-cookie-test';
+    window.localStorage.setItem(testKey, '1');
+    window.localStorage.removeItem(testKey);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 try {
   const hasConsent = window.localStorage.getItem(consentKey) === 'accepted';
-  if (hasConsent) {
-    loadFormAfterConsent();
+  if (cookiesEnabled()) {
+    if (hasConsent) {
+      loadFormAfterConsent();
+    } else {
+      showCookieModal();
+    }
   } else {
-    showCookieModal();
+    loadFormAfterConsent();
   }
 } catch (error) {
   loadFormAfterConsent();
@@ -613,8 +631,8 @@ if (acceptBtn) {
 
 if (gform) {
   gform.addEventListener('load', function () {
-    load++;
-    if (load > 1) {
+    formLoadCount++;
+    if (redirectEnabled && formLoadCount > 1) {
       window.location.href = "{{ site.baseurl }}/obrigada/";
     }
   });
