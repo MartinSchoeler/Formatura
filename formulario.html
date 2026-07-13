@@ -510,12 +510,31 @@ a{color:inherit}
 <script type="text/javascript">
 const gform = document.getElementById('gform');
 const redirectMarker = 'RedirectNow';
+let redirectTimer = null;
+let redirectAttempts = 0;
+const maxRedirectAttempts = 20;
 
 if (gform) {
   gform.addEventListener('load', function () {
-    if (window.find(redirectMarker)) {
-      window.location.href = "{{ site.baseurl }}/obrigada/";
+    function checkRedirect() {
+      if (window.find(redirectMarker)) {
+        window.location.href = "{{ site.baseurl }}/obrigada/";
+        return;
+      }
+
+      redirectAttempts += 1;
+      if (redirectAttempts < maxRedirectAttempts) {
+        redirectTimer = window.setTimeout(checkRedirect, 5000);
+      }
     }
+
+    if (redirectTimer) {
+      clearTimeout(redirectTimer);
+    }
+
+    redirectAttempts = 0;
+    console.log(redirectAttempts);
+    checkRedirect();
   });
 }
 </script>
