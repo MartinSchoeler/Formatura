@@ -625,7 +625,9 @@ if (acceptBtn) {
     try {
       window.localStorage.setItem(consentKey, 'accepted');
     } catch (error) {}
-    window.location.reload();
+    window.setTimeout(function () {
+      window.location.href = window.location.href.split('?')[0] + '?t=' + Date.now();
+    }, 2500);
   });
 }
 
