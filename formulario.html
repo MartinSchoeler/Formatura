@@ -508,15 +508,12 @@ a{color:inherit}
 })();
 </script>
 <script type="text/javascript">
-var load = 0;
-
 const gform = document.getElementById('gform');
+const redirectMarker = 'RedirectNow';
+
 if (gform) {
   gform.addEventListener('load', function () {
-    // Execute on every reload in the iframe. The second load usually
-    // corresponds to the form submission confirmation page.
-    load++;
-    if (load > 1) {
+    if (window.find(redirectMarker)) {
       window.location.href = "{{ site.baseurl }}/obrigada/";
     }
   });
