@@ -625,7 +625,7 @@ if (acceptBtn) {
     try {
       window.localStorage.setItem(consentKey, 'accepted');
     } catch (error) {}
-    loadFormAfterConsent();
+    window.location.reload();
   });
 }
 
