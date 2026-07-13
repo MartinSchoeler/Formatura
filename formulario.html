@@ -376,50 +376,6 @@ a{color:inherit}
 }
 .foot .label{ color: var(--ink-soft); opacity: .7; }
 
-/* Cookie consent */
-.cookie-modal{
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(43, 26, 74, 0.65);
-  backdrop-filter: blur(4px);
-}
-.cookie-modal.visible{ display: flex; }
-.cookie-card{
-  width: min(100%, 480px);
-  background: var(--bg);
-  border: 1px solid var(--lav-300);
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 20px 60px rgba(43, 26, 74, 0.18);
-  text-align: center;
-}
-.cookie-card .label{ margin-bottom: 12px; }
-.cookie-card h2{
-  font-family:'Dancing Script', cursive;
-  font-size: 34px;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-.cookie-card p{ color: var(--ink-soft); margin-bottom: 20px; }
-.cookie-card button{
-  border: 0;
-  background: var(--lav-600);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-family:'Hind Siliguri', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.cookie-card button:hover{ background: var(--ink); }
-
 /* Confetti stars */
 .confetti{
   position: fixed;
@@ -458,15 +414,6 @@ a{color:inherit}
 </head>
 <body>
 
-<div id="cookieConsent" class="cookie-modal visible" role="dialog" aria-modal="true" aria-labelledby="cookieTitle">
-  <div class="cookie-card">
-    <p class="label">Privacidade</p>
-    <h2 id="cookieTitle">Preciso da sua permissão para cookies</h2>
-    <p>Para o formulário funcionar corretamente, preciso da sua permissão para utilizar cookies.</p>
-    <button id="acceptCookies" type="button">Aceitar e continuar</button>
-  </div>
-</div>
-
 <div class="confetti" aria-hidden="true"></div>
 
 <div class="page">
@@ -477,7 +424,7 @@ a{color:inherit}
   </header>
 
   <section class="thanks">
-    <iframe id="gform" name="gform" data-src="https://docs.google.com/forms/d/e/1FAIpQLSexsxbKNn4gWcq1UnN9RyV5bBujS_oa-86b8lHtZ6-TrP8htw/viewform?embedded=true" src="about:blank" width="640" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <iframe id="gform" name="gform" src="https://docs.google.com/forms/d/e/1FAIpQLSexsxbKNn4gWcq1UnN9RyV5bBujS_oa-86b8lHtZ6-TrP8htw/viewform?embedded=true" width="640" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </section>
 
 
@@ -561,80 +508,15 @@ a{color:inherit}
 })();
 </script>
 <script type="text/javascript">
-let formLoadCount = 0;
-let redirectEnabled = false;
-const consentKey = 'formatura-cookie-consent';
-const cookieModal = document.getElementById('cookieConsent');
-const acceptBtn = document.getElementById('acceptCookies');
+var load = 0;
+
 const gform = document.getElementById('gform');
-
-function showCookieModal() {
-  if (cookieModal) {
-    cookieModal.classList.add('visible');
-    cookieModal.setAttribute('aria-hidden', 'false');
-  }
-}
-
-function hideCookieModal() {
-  if (cookieModal) {
-    cookieModal.classList.remove('visible');
-    cookieModal.setAttribute('aria-hidden', 'true');
-  }
-}
-
-function loadFormAfterConsent() {
-  hideCookieModal();
-  formLoadCount = 0;
-  redirectEnabled = true;
-  if (gform) {
-    const src = gform.getAttribute('data-src');
-    if (src && gform.getAttribute('src') !== src) {
-      gform.setAttribute('src', src);
-    }
-  }
-}
-
-function cookiesEnabled() {
-  try {
-    const testKey = 'formatura-cookie-test';
-    window.localStorage.setItem(testKey, '1');
-    window.localStorage.removeItem(testKey);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-try {
-  const hasConsent = window.localStorage.getItem(consentKey) === 'accepted';
-  if (cookiesEnabled()) {
-    if (hasConsent) {
-      loadFormAfterConsent();
-    } else {
-      showCookieModal();
-    }
-  } else {
-    loadFormAfterConsent();
-  }
-} catch (error) {
-  loadFormAfterConsent();
-}
-
-if (acceptBtn) {
-  acceptBtn.addEventListener('click', function () {
-    try {
-      window.localStorage.setItem(consentKey, 'accepted');
-    } catch (error) {}
-    window.setTimeout(function () {
-      window.location.href = window.location.href.split('?')[0] + '?t=' + Date.now();
-    }, 2500);
-  });
-}
-
 if (gform) {
   gform.addEventListener('load', function () {
-    formLoadCount++;
-    if (redirectEnabled && formLoadCount > 1) {
+    // Execute on every reload in the iframe. The second load usually
+    // corresponds to the form submission confirmation page.
+    load++;
+    if (load > 1) {
       window.location.href = "{{ site.baseurl }}/obrigada/";
     }
   });
